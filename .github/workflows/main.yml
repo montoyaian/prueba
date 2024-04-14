@@ -1,5 +1,6 @@
 name: Build and Push Docker image to Docker Hub
 
+
 on:
   push:
     branches:
@@ -12,12 +13,10 @@ jobs:
   build:
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
-    outputs:
-      tag_id: ${{ steps.date.outputs.date }}
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
-      - name: Get timesTamp
+      - name: Get timestamp
         id: date
         run: echo "::set-env name=BUILD_DATE::$(TZ='America/Bogota' date +'%Y-%m-%d_%H-%M-%S')"
       - name: Show timestamp
@@ -30,7 +29,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push Docker image
-        run: docker push montoyita41/utbapp:$(cat $GITHUB_ENV)
+        run: docker push montoyita41/utbapp:$BUILD_DATE
 
   deploy:
     runs-on: ubuntu-latest
@@ -51,6 +50,3 @@ jobs:
           ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
           ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
           ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-
-                
-        
