@@ -1,6 +1,5 @@
 name: Build and Push Docker image to Docker Hub
 
-
 on:
   push:
     branches:
@@ -13,24 +12,27 @@ jobs:
   build:
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
+    outputs:
+      tag_id: ${{ steps.date.outputs.date }}
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
+
       - name: Get timestamp
         id: date
-        run: echo "::set-env name=BUILD_DATE::$(TZ='America/Bogota' date +'%Y-%m-%d_%H-%M-%S')"
-      - name: Show timestamp
-        run: echo "Timestamp is $BUILD_DATE"
+        run: echo "date=$(TZ='America/Bogota' date +'%Y-%m-%d-%H-%M-%S')"
+
       - name: Build the docker file
-        run: docker build . --file Dockerfile --tag montoyita41/utbapp:$BUILD_DATE
+        run: docker build . --file Dockerfile --tag montoyita41/utbapp:${{ steps.date.outputs.date }}
+
       - name: Login to Docker Hub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build and push Docker image
-        run: docker push montoyita41/utbapp:$BUILD_DATE
 
+      - name: Push Docker image
+        run: docker push montoyita41/utbapp:${{ steps.date.outputs.date }}
   deploy:
     runs-on: ubuntu-latest
     needs: [build]
