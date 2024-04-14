@@ -20,7 +20,7 @@ jobs:
 
       - name: Get timestamp
         id: date
-        run: echo "date=$(TZ='America/Bogota' date +'%Y-%m-%d-%H-%M-%S')"
+        run: echo "date=$(TZ='America/Bogota' date +'%Y%m%d%H%M%S')"
 
       - name: Build the docker file
         run: docker build . --file Dockerfile --tag montoyita41/utbapp:${{ steps.date.outputs.date }}
