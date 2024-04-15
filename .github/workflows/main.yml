@@ -44,7 +44,7 @@ jobs:
       - name: Initialize Terraform
         run: |
           cd ./terraform
-          terraform init -input=false -chdir=./terraform/
+          terraform init -input=false -chdir=./terraform
           terraform plan -out plan.out
           terraform apply plan.out -auto-approve
         env:
