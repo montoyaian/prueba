@@ -43,7 +43,6 @@ jobs:
         uses: actions/checkout@v2
       - name: Initialize Terraform
         run: |
-          set -e
           cd ./terraform
           terraform init -input=false -chdir=./terraform/
           terraform plan -out plan.out
