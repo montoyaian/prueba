@@ -47,7 +47,7 @@ jobs:
           cd ./terraform
           terraform init -input=false -chdir=./terraform/
           terraform plan -out plan.out
-          terraform apply plan.out -auto-ap  prove
+          terraform apply plan.out -auto-approve
         env:
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
